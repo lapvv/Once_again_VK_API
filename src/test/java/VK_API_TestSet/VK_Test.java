@@ -1,3 +1,6 @@
+package VK_API_TestSet;
+
+import com.sun.deploy.config.Config;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 //import org.junit.Assert;
@@ -14,11 +17,12 @@ import static io.restassured.RestAssured.given;
 public class VK_Test {
 
     private static final String URL= "https://reqres.in/";
+    private static final String URL_VK = "https://api.vk.com";
 
-//  System.getProperties().load(ClassLoader.getSystemResourceAsStream("my.properties"));
+//  System.getProperties().load(ClassLoader.getSystemResourceAsStream("app.properties"));
 
     @Test
-    public void test1test(){
+    public void ReqresTest(){
 
         List<UserInfo> users = given()
                 .when()
@@ -29,11 +33,11 @@ public class VK_Test {
 //        users.forEach(x-> Assert.assertTrue(x.getAvatar().contains(x.getId().toString())));
     }
 
-    private static final String URL_VK = "https://api.vk.com";
+
 //    private static final String APP_ID = Config.get("app_id");
 //    private static final String OWNER_ID = Config.get("owner_id");
-//    private static final String TOKEN = Config.get("access_token");
-//    private static final String API_VERSION = Config.get("api_version");
+//    private static final String TOKEN = Config.get("VK_TOKEN");
+//    private static final String API_VERSION = Config.get("VK_API_VERSION");
 
 
 //    @Test
@@ -47,13 +51,13 @@ public class VK_Test {
     public void getProfileInfo(){
 //        String jsonString = readFile("/to-java-collection/books.json");
 //        ObjectMapper objectMapper = null;
-//        CollectionType listType = objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, UserInfo2.class);
+//        CollectionType listType = objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, VK_API_TestSet.UserInfo2.class);
 //        ObjectMapper mapper = new ObjectMapper();
 //
 //        JsonNode user1 = given()
 //                .when()
 //                .get(URL_VK+"/method/users.get?user_id=210700286&v=5.131")
-//                .then().extract().as(UserInfo2.class);
+//                .then().extract().as(VK_API_TestSet.UserInfo2.class);
 
 //        https://api.vk.com/method/METHOD?PARAMS&access_token=TOKEN&v=V
 

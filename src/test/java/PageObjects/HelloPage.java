@@ -9,5 +9,5 @@ public class HelloPage {
 
 //    WebDriver driver = new ChromeDriver();
 
-    WebElement loginLink = driver.findElement(By.xpath("//a[contains(@class,'btn-link')]"));
+//    WebElement loginLink = driver.findElement(By.xpath("//a[contains(@class,'btn-link')]"));
 }

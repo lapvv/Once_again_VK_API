@@ -1,3 +1,5 @@
+package VK_API_TestSet;
+
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
