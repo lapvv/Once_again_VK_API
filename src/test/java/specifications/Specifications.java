@@ -13,7 +13,15 @@ public class Specifications {
 
         return new RequestSpecBuilder()
                 .setBaseUri(vk_url)
-//                .setContentType(ContentType.JSON)
+                .setContentType(ContentType.JSON)
+                .build();
+    }
+
+    public static RequestSpecification requestTrelloFileSpec(String url){
+
+        return new RequestSpecBuilder()
+                .setBaseUri(url)
+                .setContentType(ContentType.MULTIPART)
                 .build();
     }
 
