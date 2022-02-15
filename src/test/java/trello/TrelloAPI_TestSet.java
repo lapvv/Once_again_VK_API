@@ -26,6 +26,7 @@ public class TrelloAPI_TestSet {
     public static String cardId;
     String Trello_key = System.getProperty("TRELLO_KEY");
     String Trello_token = System.getProperty("TRELLO_TOKEN");
+    String Trello_secret = System.getProperty("OAuth1_secret");
     String authString = "oauth_consumer_key="+Trello_key+"&oauth_token="+Trello_token;
     String authStringWithAmp = "&oauth_consumer_key="+Trello_key+"&oauth_token="+Trello_token;
     String authStringWithQues = "?oauth_consumer_key="+Trello_key+"&oauth_token="+Trello_token;
@@ -175,6 +176,7 @@ public class TrelloAPI_TestSet {
         Specifications.installSpec(Specifications.requestVKSpec(Trello_URL), Specifications.responseSpec(200));
         given()
                 .when()
+//                .auth().oauth(Trello_key, Trello_secret, Trello_token, "")
                 .queryParam("state", "complete")
                 .put("/1/cards/{id}/checkItem/{idCheckItem}"+authStringWithQues, "6203c130356a852cf22b8371", "6207ebe96dc9c8345c6f2d19")
                 .then()
@@ -248,60 +250,4 @@ public class TrelloAPI_TestSet {
                 .then()
                 .log().body();
     }
-
-//    {
-//        "unified": "1F44D",
-//            "name": "THUMBS UP SIGN",
-//            "native": "👍",
-//            "shortName": "+1",
-//            "shortNames": [
-//        "+1",
-//                "thumbsup"
-//            ],
-//        "text": null,
-//            "texts": null,
-//            "category": "Smileys & People",
-//            "sheetX": 14,
-//            "sheetY": 49,
-//            "skinVariations": {
-//        "1F3FB": {
-//            "unified": "1F44D-1F3FB",
-//                    "native": "👍🏻",
-//                    "sheetX": 14,
-//                    "sheetY": 50
-//        },
-//        "1F3FC": {
-//            "unified": "1F44D-1F3FC",
-//                    "native": "👍🏼",
-//                    "sheetX": 14,
-//                    "sheetY": 51
-//        },
-//        "1F3FD": {
-//            "unified": "1F44D-1F3FD",
-//                    "native": "👍🏽",
-//                    "sheetX": 15,
-//                    "sheetY": 0
-//        },
-//        "1F3FE": {
-//            "unified": "1F44D-1F3FE",
-//                    "native": "👍🏾",
-//                    "sheetX": 15,
-//                    "sheetY": 1
-//        },
-//        "1F3FF": {
-//            "unified": "1F44D-1F3FF",
-//                    "native": "👍🏿",
-//                    "sheetX": 15,
-//                    "sheetY": 2
-//        }
-//    },
-//        "tts": "thumbs up",
-//            "keywords": [
-//        "+1",
-//                "hand",
-//                "thumb",
-//                "thumbs up",
-//                "up"
-//            ]
-//    },
 }

@@ -1,6 +1,8 @@
 package specifications;
 
 import io.restassured.RestAssured;
+import io.restassured.authentication.FormAuthConfig;
+import io.restassured.authentication.OAuthScheme;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
@@ -20,6 +22,7 @@ public class Specifications {
     public static RequestSpecification requestTrelloFileSpec(String url){
 
         return new RequestSpecBuilder()
+//                .setAuth(OAuthScheme())
                 .setBaseUri(url)
                 .setContentType(ContentType.MULTIPART)
                 .build();
