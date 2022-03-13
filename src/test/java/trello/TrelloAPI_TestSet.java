@@ -4,8 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import okhttp3.MediaType;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import specifications.Specifications;
 
 import javax.smartcardio.Card;
@@ -19,6 +18,7 @@ import java.util.*;
 
 import static io.restassured.RestAssured.given;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TrelloAPI_TestSet {
 
 //    private final static String VK_URL = "https://api.vk.com";
@@ -40,8 +40,8 @@ public class TrelloAPI_TestSet {
     String Trello_token = System.getProperty("TRELLO_TOKEN");
 //    String Trello_secret = System.getProperty("OAuth1_secret");
 //    String authString = "oauth_consumer_key="+Trello_key+"&oauth_token="+Trello_token;
-    String authStringWithAmp = "&oauth_consumer_key="+Trello_key+"&oauth_token="+Trello_token;
-    String authStringWithQues = "?oauth_consumer_key="+Trello_key+"&oauth_token="+Trello_token;
+//    String authStringWithAmp = "&oauth_consumer_key="+Trello_key+"&oauth_token="+Trello_token;
+//    String authStringWithQues = "?oauth_consumer_key="+Trello_key+"&oauth_token="+Trello_token;
 
 
 //    RestAssured.config(RestAssured.config().encoderConfig(EncoderConfig.encoderConfig().defaultCharsetForContentType("UTF-8", "application/json")));
@@ -71,7 +71,7 @@ public class TrelloAPI_TestSet {
                 .extract().path("id");
     }
 
-    private void updateCheckItemOnACard(String cardId, String checkItemId) {
+    private void updateCheckItemOnACardComplete(String cardId, String checkItemId) {
         Specifications.installSpec(Specifications.requestVKSpec(Trello_URL), Specifications.responseSpec(200));
         given()
                 .when()
@@ -90,6 +90,7 @@ public class TrelloAPI_TestSet {
     }
 
     @Test
+    @Order(1)
     public void getBoardsInfo() {
         Specifications.installSpec(Specifications.requestVKSpec(Trello_URL), Specifications.responseSpec(200));
         given()
@@ -102,32 +103,34 @@ public class TrelloAPI_TestSet {
     }
 
     @Test
+    @Order(2)
     public void createKanbanToolBoard(){
         Specifications.installSpec(Specifications.requestVKSpec(Trello_URL), Specifications.responseSpec(200));
         boardId = given()
                 .when()
                 .queryParam("key", Trello_key)
                 .queryParam("token", Trello_token)
-                .post("/1/boards/?name="+boardName)
+                .queryParam("name", boardName)
+                .post("/1/boards/")
                 .then().log().all()
                 .extract().path("id");
 //        System.out.println("НОМЕР СОХРАНЕННОЙ ДОСКИ: "+boardId);
     }
-//        boardId = "62014c7e61a1b58a287773b2";
-//?name="+listName
+//        boardId = "6228f9e5e473c5095d6c242c";
 
     @Test
+    @Order(3)
     public void create1ListOnBoard(){
         createListOnBoard(list1Name, boardId, listId);
     }
-//idList = "6201539e495bc95acf6c9fa4";
+//idList = "6228f9e6cc43002d4a67b1f6";
 
     @Test
-    public void createCardOnTheListTest() throws UnsupportedEncodingException {
+    @Order(4)
+    public void createCardOnTheListTest() {
         Specifications.installSpec(Specifications.requestVKSpec(Trello_URL), Specifications.responseSpec(200));
-//        String idListParam = "&idList=6201539e495bc95acf6c9fa4"; //заменить на "?idList="+idList
         cardId = given()
-                .header("Accept", "application/json")
+//                .header("Accept", "application/json")
                 .when()
                 .queryParam("name", cardName)
                 .queryParam("key", Trello_key)
@@ -140,6 +143,7 @@ public class TrelloAPI_TestSet {
 //String cardId = "6203c130356a852cf22b8371";
 
     @Test
+    @Order(5)
     public void createAttachmentToCard(){
         Specifications.installSpec(Specifications.requestTrelloFileSpec(Trello_URL), Specifications.responseSpec(200));
 //        String cardIdParam = "6203c130356a852cf22b8371";
@@ -155,6 +159,7 @@ public class TrelloAPI_TestSet {
 //    id = 6203cb5719b828121321f41b
 
     @Test
+    @Order(6)
     public void updateCard() {
         Specifications.installSpec(Specifications.requestVKSpec(Trello_URL), Specifications.responseSpec(200));
 //        String cardIdParam = "6203c130356a852cf22b8371";
@@ -174,6 +179,7 @@ public class TrelloAPI_TestSet {
     }
 
     @Test
+    @Order(7)
     public void createChecklist() {
         Specifications.installSpec(Specifications.requestVKSpec(Trello_URL), Specifications.responseSpec(200));
 //        String cardIdParam = "6203c130356a852cf22b8371";
@@ -189,30 +195,51 @@ public class TrelloAPI_TestSet {
     }
     //checklistId = "6207d2d3e4eaee048e9b242f";
 
+/*    @Test
+    public void createChecklistOld() {
+        Specifications.installSpec(Specifications.requestVKSpec(Trello_URL), Specifications.responseSpec(200));
+        String cardIdParam = "6203c130356a852cf22b8371";
+        String checklistId = given()
+                .when()
+//                .param("idCard", cardIdParam)
+                .post("/1/checklists"+"?idCard="+cardIdParam+authStringWithAmp)
+                .then()
+                .log().body()
+                .extract().path("id");
+    }
+    //6207d2d3e4eaee048e9b242f
+
+ */
+
     @Test
+    @Order(8)
     public void createCheckItem1() {
         createCheckItem(task1, checkItem1Id);
     }
 //checkItem1Id = "6207ebe96dc9c8345c6f2d19";
 
     @Test
+    @Order(9)
     public void createCheckItem2() {
         createCheckItem(task2, checkItem2Id);
     }
 //checkItem2Id = "6207ec182e24fd218e7ba75f";
 
     @Test
+    @Order(10)
     public void update1CheckItemOnACard(){
-        updateCheckItemOnACard(cardId, checkItem1Id);
+        updateCheckItemOnACardComplete(cardId, checkItem1Id);
     }
 
     @Test
+    @Order(11)
     public void createDoneList() {
         createListOnBoard(list2Name, boardId, doneListId);
     }
     //doneListId = 6207f8dce6fe006fca2d8bf9
 
     @Test
+    @Order(12)
     public void updateCard2() {
         Specifications.installSpec(Specifications.requestVKSpec(Trello_URL), Specifications.responseSpec(200));
         given()
@@ -227,6 +254,7 @@ public class TrelloAPI_TestSet {
     }
 
     @Test
+    @Order(13)
     public void updateAList() {
         Specifications.installSpec(Specifications.requestVKSpec(Trello_URL), Specifications.responseSpec(200));
         given()
@@ -240,11 +268,13 @@ public class TrelloAPI_TestSet {
     }
 
     @Test
+    @Order(14)
     public void update2CheckItemOnACard(){
-        updateCheckItemOnACard(cardId, checkItem2Id);
+        updateCheckItemOnACardComplete(cardId, checkItem2Id);
     }
 
     @Test
+    @Order(15)
     public void addCommentToCard() {
         Specifications.installSpec(Specifications.requestVKSpec(Trello_URL), Specifications.responseSpec(200));
         given()
@@ -257,17 +287,18 @@ public class TrelloAPI_TestSet {
                 .then()
                 .log().body();
     }
-/*
+
     @Test
+    @Order(16)
     public void deleteBoard(){
         Specifications.installSpec(Specifications.requestVKSpec(Trello_URL), Specifications.responseSpec(200));
         given()
                 .when()
                 .queryParam("key", Trello_key)
                 .queryParam("token", Trello_token)
-                .post("/1/boards/"+boardId)
+                .delete("/1/boards/"+boardId)
                 .then().log().body()
                 .extract().jsonPath();
     }
-    */
+
 }
