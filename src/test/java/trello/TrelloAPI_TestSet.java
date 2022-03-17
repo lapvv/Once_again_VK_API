@@ -1,6 +1,7 @@
 package trello;
 
 import io.restassured.RestAssured;
+import io.restassured.config.DecoderConfig;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import okhttp3.MediaType;
@@ -184,12 +185,14 @@ public class TrelloAPI_TestSet {
         Specifications.installSpec(Specifications.requestVKSpec(Trello_URL), Specifications.responseSpec(200));
 //        String cardIdParam = "6203c130356a852cf22b8371";
         checklistId = given()
+//                .contentType(ContentType.JSON)
                 .when()
                 .queryParam("key", Trello_key)
                 .queryParam("token", Trello_token)
                 .queryParam("idCard", cardId)
                 .post("/1/checklists")
                 .then()
+//                .contentType("application/json; charset=utf-8")
                 .log().body()
                 .extract().path("id");
     }

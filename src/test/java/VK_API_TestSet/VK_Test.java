@@ -181,7 +181,7 @@ public class VK_Test {
                 .post(docServerURL)
                 .then().log().body()
                 .extract().as(DocLoad.class);
-        System.out.println(serverCredentialsDoc.getFile());
+//        System.out.println(serverCredentialsDoc.getFile());
     }
 
     String file = "13855514|0|0|237231|b38f44dc0e|txt|571|this_num.txt|a630789c7ecdddf8cc454eab9e93d0b1|ef45365cd5bc13a09245c7d6c8970789||||eyJkaXNrIjoxOX0=";
@@ -219,13 +219,16 @@ public class VK_Test {
     @Test // тут надо коллекцию получить и лайкнуть 5ю новость stream
     public void likeFifthSugNews() {
         Specifications.installSpec(Specifications.requestVKSpec(URL_VK), Specifications.responseSpec(200));
-        given()
+        List<SugNews> recNews = given()
                 .when()
                 .header("Authorization", "Bearer " + VK_TOKEN)
                 .queryParam("v", VK_version)
+                .queryParam("count", 6)
                 .post("/method/newsfeed.getRecommended")
                 .then().log().body()
-                .extract().jsonPath();
+                .extract().body().jsonPath().getList("response.items", SugNews.class);
+        System.out.println(recNews.toString());
+//        int i = 0;
     }
 
     //    @Test
